@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POUSADA - P&A</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/carregamento.css">
+
+    <!-- Se a tela de carregamento já foi exibida nesta sessão, esconde antes da página aparecer (evita piscar) -->
+    <script>
+    (function () {
+        try {
+            if (sessionStorage.getItem("carregamentoVisto")) {
+                document.write("<style>#carregamento { display: none !important; } body.carregando { overflow: auto !important; }</style>");
+            }
+        } catch (e) {}
+    })();
+    </script>
+
+    <!-- Se o JavaScript estiver desligado, esconde a tela de carregamento para não travar o site -->
+    <noscript>
+        <style>#carregamento { display: none; } body.carregando { overflow: auto; }</style>
+    </noscript>
+</head>
+
+<body class="home carregando">
+
+    <!-- TELA DE CARREGAMENTO -->
+    <div id="carregamento" role="status" aria-live="polite" aria-label="Carregando a Pousada P&A">
+        <div class="car-cortina esq"></div>
+        <div class="car-cortina dir"></div>
+
+        <div class="car-conteudo">
+            <svg class="car-casa" viewBox="0 0 64 64" aria-hidden="true">
+                <path pathLength="1" d="M8 30 L32 10 L56 30"/>
+                <path pathLength="1" d="M14 26 V54 H50 V26"/>
+                <path pathLength="1" d="M27 54 V40 H37 V54"/>
+                <path pathLength="1" d="M29 28 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0"/>
+            </svg>
+
+            <h2 class="car-nome" aria-label="Pousada">
+                <span style="--i:0" aria-hidden="true">P</span><span style="--i:1" aria-hidden="true">o</span><span style="--i:2" aria-hidden="true">u</span><span style="--i:3" aria-hidden="true">s</span><span style="--i:4" aria-hidden="true">a</span><span style="--i:5" aria-hidden="true">d</span><span style="--i:6" aria-hidden="true">a</span>
+            </h2>
+            <p class="car-sigla">P&amp;A</p>
+
+            <div class="car-barra"><span></span></div>
+            <p class="car-texto">Abrindo as portas…</p>
+        </div>
+    </div>
+
+    <header>
+        <h1>
+            POUSADA - P&A
+        </h1>
+        <p class="subtitulo">Clientes, quartos e reservas em um só lugar</p>
+    </header>
+    <main>
+        <div id="containerGeral">
+            <nav class="links">
+                <a href="cadastroCliente.php">
+                    <span class="icone" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </span>
+                    <strong>GERENCIAR CLIENTES</strong>
+                    <small>Cadastro e consulta dos hóspedes</small>
+                </a>
+
+                <a href="cadastroQuarto.php">
+                    <span class="icone" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/><path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M12 4v6"/><path d="M2 18h20"/></svg>
+                    </span>
+                    <strong>GERENCIAR QUARTOS</strong>
+                    <small>Cadastro e consulta dos quartos</small>
+                </a>
+
+                <a href="cadastroReserva.php">
+                    <span class="icone" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/></svg>
+                    </span>
+                    <strong>GERENCIAR RESERVAS</strong>
+                    <small>Entradas, saídas e situação das reservas</small>
+                </a>
+            </nav>
+        </div>
+    </main>
+    <footer>
+        &copy; 2026 - TODOS OS DIREITOS RESERVADOS
+    </footer>
+
+    <!-- Fecha a tela de carregamento: espera a página carregar e no mínimo 2,6 segundos para a animação aparecer inteira -->
+    <script>
+    (function () {
+        var tela = document.getElementById("carregamento");
+        if (!tela) { return; }
+
+        /* Já viu a animação nesta sessão (ex.: voltou de outra tela): remove na hora */
+        var jaViu = false;
+        try { jaViu = !!sessionStorage.getItem("carregamentoVisto"); } catch (e) {}
+        if (jaViu) {
+            tela.parentNode.removeChild(tela);
+            document.body.classList.remove("carregando");
+            return;
+        }
+        try { sessionStorage.setItem("carregamentoVisto", "1"); } catch (e) {}
+
+        var reduzMovimento = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var tempoMinimo = reduzMovimento ? 800 : 2600;
+        var jaSaiu = false;
+
+        function sair() {
+            if (jaSaiu) { return; }
+            jaSaiu = true;
+            tela.classList.add("saindo");
+
+            setTimeout(function () {
+                if (tela.parentNode) { tela.parentNode.removeChild(tela); }
+                document.body.classList.remove("carregando");
+            }, reduzMovimento ? 350 : 1100);
+        }
+
+        function esperarTempoMinimo() {
+            var jaPassou = (window.performance && performance.now) ? performance.now() : 0;
+            setTimeout(sair, Math.max(0, tempoMinimo - jaPassou));
+        }
+
+        if (document.readyState === "complete") {
+            esperarTempoMinimo();
+        } else {
+            window.addEventListener("load", esperarTempoMinimo);
+        }
+
+        /* Garantia: se algo demorar demais, abre o site depois de 7 segundos */
+        setTimeout(sair, 7000);
+    })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,192 @@
+/* ==========================================================
+   TELA DE CARREGAMENTO - POUSADA P&A
+   Para combinar com o site, é só mudar as 4 cores abaixo.
+   ========================================================== */
+:root {
+    --car-fundo: #0e2a33;
+    --car-fundo-2: #0b2229;
+    --car-texto: #f2e8d5;
+    --car-destaque: #d9a95b;
+}
+
+/* Trava a rolagem enquanto a tela de carregamento está aberta */
+body.carregando {
+    overflow: hidden;
+}
+
+#carregamento {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-family: "Figtree", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    color: var(--car-texto);
+}
+
+/* ---------- As duas "portas" que abrem no final ---------- */
+.car-cortina {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50.5%;
+    background: var(--car-fundo);
+    transition: transform .9s cubic-bezier(.76, 0, .24, 1) .15s;
+}
+.car-cortina.esq { left: 0; }
+.car-cortina.dir { right: 0; background: var(--car-fundo-2); }
+
+#carregamento.saindo .car-cortina.esq { transform: translateX(-101%); }
+#carregamento.saindo .car-cortina.dir { transform: translateX(101%); }
+
+/* ---------- Conteúdo do meio ---------- */
+.car-conteudo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 24px;
+    text-align: center;
+    transition: opacity .35s ease, transform .35s ease;
+}
+#carregamento.saindo .car-conteudo {
+    opacity: 0;
+    transform: scale(.96);
+}
+
+/* ---------- Casinha que se desenha sozinha ---------- */
+.car-casa {
+    width: 84px;
+    height: 84px;
+    margin-bottom: 6px;
+    fill: none;
+    stroke: var(--car-destaque);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.car-casa path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+    animation: carTraco .9s ease both;
+}
+.car-casa path:nth-child(1) { animation-delay: .1s; }
+.car-casa path:nth-child(2) { animation-delay: .5s; }
+.car-casa path:nth-child(3) { animation-delay: .9s; }
+.car-casa path:nth-child(4) { animation-delay: 1.2s; }
+
+@keyframes carTraco {
+    0%   { stroke-dashoffset: 1; opacity: 0; }
+    1%   { opacity: 1; }
+    100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+/* ---------- Nome: as letras sobem uma de cada vez ---------- */
+.car-nome {
+    display: flex;
+    margin: 0;
+    padding: .08em .04em .12em;
+    overflow: hidden;
+    font-family: "Fraunces", Georgia, "Times New Roman", serif;
+    font-weight: 700;
+    font-size: clamp(2.6rem, 10vw, 4.8rem);
+    line-height: 1.05;
+    letter-spacing: .01em;
+}
+.car-nome span {
+    display: inline-block;
+    transform: translateY(110%);
+    animation: carSobe .7s cubic-bezier(.2, .8, .2, 1) forwards;
+    animation-delay: calc(.55s + var(--i) * .07s);
+}
+@keyframes carSobe {
+    to { transform: translateY(0); }
+}
+
+/* ---------- Sigla P&A ---------- */
+.car-sigla {
+    margin: 0;
+    font-family: "Fraunces", Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
+    color: var(--car-destaque);
+    opacity: 0;
+    animation: carSigla .8s ease 1.2s forwards;
+}
+@keyframes carSigla {
+    from { opacity: 0; letter-spacing: .4em; }
+    to   { opacity: 1; letter-spacing: .12em; }
+}
+
+/* ---------- Barra de progresso ---------- */
+.car-barra {
+    width: min(180px, 60vw);
+    height: 3px;
+    margin-top: 10px;
+    border-radius: 3px;
+    background: rgba(242, 232, 213, .18);
+    overflow: hidden;
+}
+.car-barra span {
+    display: block;
+    height: 100%;
+    background: var(--car-destaque);
+    transform-origin: left;
+    transform: scaleX(0);
+    animation: carBarra 2.4s cubic-bezier(.3, .6, .3, 1) .2s forwards;
+}
+@keyframes carBarra {
+    to { transform: scaleX(.92); }
+}
+#carregamento.saindo .car-barra span {
+    animation: none;
+    transform: scaleX(1);
+}
+
+/* ---------- Textinho ---------- */
+.car-texto {
+    margin: 0;
+    font-size: .95rem;
+    color: rgba(242, 232, 213, .75);
+    opacity: 0;
+    animation: carAparece .6s ease 1.4s forwards;
+}
+@keyframes carAparece {
+    to { opacity: 1; }
+}
+
+/* ---------- Para quem prefere menos movimento ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .car-casa path,
+    .car-nome span,
+    .car-sigla,
+    .car-texto {
+        animation: none;
+        opacity: 1;
+        transform: none;
+        stroke-dashoffset: 0;
+        letter-spacing: .12em;
+    }
+    .car-nome span { letter-spacing: normal; }
+    .car-barra span {
+        animation: none;
+        transform: scaleX(.92);
+    }
+    #carregamento {
+        transition: opacity .3s ease;
+    }
+    #carregamento.saindo {
+        opacity: 0;
+    }
+    #carregamento.saindo .car-cortina.esq,
+    #carregamento.saindo .car-cortina.dir {
+        transform: none;
+    }
+}
